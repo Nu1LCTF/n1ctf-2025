@@ -1,0 +1,232 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Upload File</title>
+    <style>
+        :root {
+            font-family: "Helvetica Neue", Arial, "PingFang SC", "Microsoft YaHei", sans-serif;
+            color: #1f2933;
+            background-color: #f5f6fa;
+        }
+        body {
+            margin: 0;
+            background: #f5f6fa;
+        }
+        header {
+            background: #0f172a;
+            color: #fff;
+            padding: 18px 24px;
+        }
+        header .container {
+            max-width: 960px;
+            margin: 0 auto;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+        header h1 {
+            margin: 0;
+            font-size: 20px;
+        }
+        nav a {
+            color: rgba(255, 255, 255, 0.88);
+            margin-left: 24px;
+            text-decoration: none;
+            font-size: 15px;
+        }
+        nav a:hover {
+            color: #fff;
+        }
+        main {
+            max-width: 520px;
+            margin: 40px auto;
+            padding: 0 24px 48px;
+        }
+        section {
+            background: #fff;
+            border: 1px solid #e5e7eb;
+            border-radius: 12px;
+            padding: 28px;
+        }
+        h2 {
+            font-size: 22px;
+            margin: 0 0 12px;
+        }
+        p {
+            color: #4b5563;
+            line-height: 1.6;
+            margin: 0 0 16px;
+        }
+        form {
+            display: grid;
+            gap: 16px;
+        }
+        label {
+            display: grid;
+            gap: 8px;
+            font-size: 14px;
+            color: #374151;
+        }
+        input[type="text"],
+        input[type="file"],
+        textarea {
+            padding: 10px 12px;
+            border-radius: 8px;
+            border: 1px solid #d1d5db;
+            background: #fff;
+            font-size: 14px;
+        }
+        textarea {
+            min-height: 90px;
+            resize: vertical;
+        }
+        input:focus,
+        textarea:focus {
+            outline: none;
+            border-color: #2563eb;
+            box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.2);
+        }
+        button {
+            padding: 10px 16px;
+            border-radius: 8px;
+            border: none;
+            background: #2563eb;
+            color: #fff;
+            font-size: 15px;
+            cursor: pointer;
+        }
+        button:hover {
+            background: #1d4ed8;
+        }
+        button:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+        }
+        .message {
+            min-height: 20px;
+            font-size: 14px;
+        }
+        .note {
+            font-size: 13px;
+            color: #6b7280;
+            line-height: 1.6;
+        }
+        footer {
+            max-width: 960px;
+            margin: 0 auto 32px;
+            padding: 0 24px;
+            color: #6b7280;
+            font-size: 13px;
+        }
+        @media (max-width: 600px) {
+            nav a {
+                margin-left: 12px;
+            }
+            section {
+                padding: 24px;
+            }
+        }
+    </style>
+</head>
+<body>
+<header>
+    <div class="container">
+        <h1>File Service</h1>
+        <nav>
+            <a href="/">Home</a>
+            <a href="/login">Log In</a>
+            <a href="/upload">Upload</a>
+        </nav>
+    </div>
+</header>
+<main>
+    <section>
+        <h2>Upload File</h2>
+        <form id="upload-form">
+            <label>
+                Select File
+                <input name="file" type="file" required>
+            </label>
+            <label>
+                Filename (Optional)
+                <input name="filename" type="text" placeholder="Leave blank to use the original filename">
+            </label>
+            <button type="submit">Upload File</button>
+            <div class="message" id="message"></div>
+        </form>
+    </section>
+</main>
+
+<script>
+(function () {
+    const form = document.getElementById('upload-form');
+    const message = document.getElementById('message');
+
+    form.file.addEventListener('change', () => {
+        if (form.file.files.length > 0 && !form.filename.value) {
+            form.filename.value = form.file.files[0].name;
+        }
+    });
+
+    function fileToBase64(file) {
+        return new Promise((resolve, reject) => {
+            const reader = new FileReader();
+            reader.onload = () => {
+                const result = reader.result || '';
+                resolve(result.toString().split(',').pop());
+            };
+            reader.onerror = () => reject(new Error('Failed to read file'));
+            reader.readAsDataURL(file);
+        });
+    }
+
+    form.addEventListener('submit', async (event) => {
+        event.preventDefault();
+        if (form.file.files.length === 0) {
+            message.style.color = '#b91c1c';
+            message.textContent = 'Please choose a file before submitting.';
+            return;
+        }
+
+        const filename = form.filename.value.trim() || form.file.files[0].name;
+
+        message.textContent = 'Reading file...';
+        form.querySelector('button').disabled = true;
+
+        try {
+            const filedata = await fileToBase64(form.file.files[0]);
+            message.textContent = 'Uploading...';
+
+            const response = await fetch('/upload', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                credentials: 'same-origin',
+                body: JSON.stringify({ filename, filedata }),
+            });
+
+            if (response.status === 401) {
+                throw new Error('Authentication failed. Please log in again and retry.');
+            }
+
+            const result = await response.json();
+            if (!response.ok) {
+                throw new Error(result.error || result.message || 'Upload failed');
+            }
+
+            message.style.color = '#047857';
+            message.textContent = result.message || 'Upload successful.';
+        } catch (error) {
+            message.style.color = '#b91c1c';
+            message.textContent = error.message;
+        } finally {
+            form.querySelector('button').disabled = false;
+        }
+    });
+})();
+</script>
+</body>
+</html>
