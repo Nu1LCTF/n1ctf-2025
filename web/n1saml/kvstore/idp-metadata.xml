@@ -1,0 +1,25 @@
+<EntityDescriptor xmlns="urn:oasis:names:tc:SAML:2.0:metadata" validUntil="2025-11-01T05:23:26.991Z" cacheDuration="PT48H" entityID="https://exp10it.io/metadata">
+  <IDPSSODescriptor xmlns="urn:oasis:names:tc:SAML:2.0:metadata" protocolSupportEnumeration="urn:oasis:names:tc:SAML:2.0:protocol">
+    <KeyDescriptor use="signing">
+      <KeyInfo xmlns="http://www.w3.org/2000/09/xmldsig#">
+        <X509Data xmlns="http://www.w3.org/2000/09/xmldsig#">
+          <X509Certificate xmlns="http://www.w3.org/2000/09/xmldsig#">MIIDCzCCAfOgAwIBAgIUSiUiRygoDXeHmdlaYrIYO2S6Gs4wDQYJKoZIhvcNAQELBQAwFTETMBEGA1UEAwwKR29TQU1MLUlEUDAeFw0yNTEwMjgxMTU0NDFaFw0yNjEwMjgxMTU0NDFaMBUxEzARBgNVBAMMCkdvU0FNTC1JRFAwggEiMA0GCSqGSIb3DQEBAQUAA4IBDwAwggEKAoIBAQDiBeYWvFkHVyJ2J0dPfKwnga6eUt3MHzSwnwNswOyL2Q7ICBcu6+cgBm05fDfa7kTQ001F9MGM+GV6n7PQqDUNdDvCKbP/0HUd59APFF2TbCP+Y4AZsOEjzHVkWjKCOcIAzT2hoH8vVWBghxxInYeY9TlhJL4nL0upefiMEuNz4GHdp7MJMTsIEK4iNt6joEUUJrMFJaNddFmNVEpQiuMjnlA1j4+LRQtU1mr7V/t7AWX/5thRb1Sn5aK1z2lHXMkpOKjA/lwxgPrWBHXh8iXMKkyC9VCHLOvf1KOLRr76/IUQ0uI+xBcmPALgBexZCWDbSJ5DsC+FsIABWzH54TelAgMBAAGjUzBRMB0GA1UdDgQWBBQTX+toUBDK9h8pogry14RgEBWoAzAfBgNVHSMEGDAWgBQTX+toUBDK9h8pogry14RgEBWoAzAPBgNVHRMBAf8EBTADAQH/MA0GCSqGSIb3DQEBCwUAA4IBAQB0LXc8QCZV5YXjTm1qYwd9+R7CRgoGVmnrBmW2Z6F0dH28uwMOUv00RN868mM8ANb/8TEFIWNItqZwZEZXQdSdPLpBWdEkbpCk4JzLVPsrhqkUdve7+aRuJL0/zgii26hzaxIpTNEmfTaxnZc6p4rd3vc5JkMNJ711sx7NJKoboXolxyOJKfpMw4kuyvG825Eh0NInx1KgGF+RRLbxk+xx1r3+KX4CAe0hrY2O5AB+y3+u2QXdgzerEvVDg7TMqOO86YiNlRdb0B3UPh6MECLxJ3lqHxuqx9uB11NxOR5vp61nmH72fnBvDQAdDipmwj5N9FXm3XFoAWcCBUYhBIfV</X509Certificate>
+        </X509Data>
+      </KeyInfo>
+    </KeyDescriptor>
+    <KeyDescriptor use="encryption">
+      <KeyInfo xmlns="http://www.w3.org/2000/09/xmldsig#">
+        <X509Data xmlns="http://www.w3.org/2000/09/xmldsig#">
+          <X509Certificate xmlns="http://www.w3.org/2000/09/xmldsig#">MIIDCzCCAfOgAwIBAgIUSiUiRygoDXeHmdlaYrIYO2S6Gs4wDQYJKoZIhvcNAQELBQAwFTETMBEGA1UEAwwKR29TQU1MLUlEUDAeFw0yNTEwMjgxMTU0NDFaFw0yNjEwMjgxMTU0NDFaMBUxEzARBgNVBAMMCkdvU0FNTC1JRFAwggEiMA0GCSqGSIb3DQEBAQUAA4IBDwAwggEKAoIBAQDiBeYWvFkHVyJ2J0dPfKwnga6eUt3MHzSwnwNswOyL2Q7ICBcu6+cgBm05fDfa7kTQ001F9MGM+GV6n7PQqDUNdDvCKbP/0HUd59APFF2TbCP+Y4AZsOEjzHVkWjKCOcIAzT2hoH8vVWBghxxInYeY9TlhJL4nL0upefiMEuNz4GHdp7MJMTsIEK4iNt6joEUUJrMFJaNddFmNVEpQiuMjnlA1j4+LRQtU1mr7V/t7AWX/5thRb1Sn5aK1z2lHXMkpOKjA/lwxgPrWBHXh8iXMKkyC9VCHLOvf1KOLRr76/IUQ0uI+xBcmPALgBexZCWDbSJ5DsC+FsIABWzH54TelAgMBAAGjUzBRMB0GA1UdDgQWBBQTX+toUBDK9h8pogry14RgEBWoAzAfBgNVHSMEGDAWgBQTX+toUBDK9h8pogry14RgEBWoAzAPBgNVHRMBAf8EBTADAQH/MA0GCSqGSIb3DQEBCwUAA4IBAQB0LXc8QCZV5YXjTm1qYwd9+R7CRgoGVmnrBmW2Z6F0dH28uwMOUv00RN868mM8ANb/8TEFIWNItqZwZEZXQdSdPLpBWdEkbpCk4JzLVPsrhqkUdve7+aRuJL0/zgii26hzaxIpTNEmfTaxnZc6p4rd3vc5JkMNJ711sx7NJKoboXolxyOJKfpMw4kuyvG825Eh0NInx1KgGF+RRLbxk+xx1r3+KX4CAe0hrY2O5AB+y3+u2QXdgzerEvVDg7TMqOO86YiNlRdb0B3UPh6MECLxJ3lqHxuqx9uB11NxOR5vp61nmH72fnBvDQAdDipmwj5N9FXm3XFoAWcCBUYhBIfV</X509Certificate>
+        </X509Data>
+      </KeyInfo>
+      <EncryptionMethod Algorithm="http://www.w3.org/2001/04/xmlenc#aes128-cbc"></EncryptionMethod>
+      <EncryptionMethod Algorithm="http://www.w3.org/2001/04/xmlenc#aes192-cbc"></EncryptionMethod>
+      <EncryptionMethod Algorithm="http://www.w3.org/2001/04/xmlenc#aes256-cbc"></EncryptionMethod>
+      <EncryptionMethod Algorithm="http://www.w3.org/2001/04/xmlenc#rsa-oaep-mgf1p"></EncryptionMethod>
+    </KeyDescriptor>
+    <NameIDFormat>urn:oasis:names:tc:SAML:2.0:nameid-format:transient</NameIDFormat>
+    <SingleSignOnService Binding="urn:oasis:names:tc:SAML:2.0:bindings:HTTP-Redirect" Location="https://exp10it.io/sso"></SingleSignOnService>
+    <SingleSignOnService Binding="urn:oasis:names:tc:SAML:2.0:bindings:HTTP-POST" Location="https://exp10it.io/sso"></SingleSignOnService>
+  </IDPSSODescriptor>
+</EntityDescriptor>

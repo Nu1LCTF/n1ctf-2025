@@ -1,0 +1,39 @@
+services:
+  healthcheck:
+    build: ./healthcheck
+    ports:
+      - "8000:8000"
+    environment:
+      - IN_DOCKER=true
+
+  sp:
+    build: ./sp
+    ports:
+      - "9000:9000"
+    environment:
+      - IN_DOCKER=true
+      - FLAG="flag{test}"
+    depends_on:
+      - kvstore
+      - proxy
+
+  proxy:
+    build: ./proxy
+    ports:
+      - "2379:2379"
+    environment:
+      - IN_DOCKER=true
+    depends_on:
+      - kvstore
+
+  kvstore:
+    build: ./kvstore
+    ports:
+      - "12379:12379"
+      - "22379:22379"
+      - "32379:32379"
+      - "12380:12380"
+      - "22380:22380"
+      - "32380:32380"
+    environment:
+      - IN_DOCKER=true
